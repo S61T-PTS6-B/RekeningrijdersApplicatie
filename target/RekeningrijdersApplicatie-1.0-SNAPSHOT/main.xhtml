@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>De Rekeningrijder - Menu</title>
+        <h:outputStylesheet library="css" name="mainstyle.css"/>
+        <h:outputStylesheet library="css" name="bootstrap.css"/>
+    </h:head>
+    <h:body>
+        <div id="main">
+            <div id="menuheader">
+                <h2 id="headertext" >De Rekeningrijder</h2>
+                <div id="loggedinas">
+                    #{accountController.activeUser.bsn}
+                    <h:button id="btnLogout" value="Uitloggen" outcome="login.xhtml"/>
+                </div>
+            </div>
+            <div id="sidemenu">
+                <ul id="menulist">
+                    <li>
+                        Rekeningoverzicht
+                    </li>
+                    <li>
+                        Mijn gegevens
+                    </li>
+                    <li>
+                        File informatie
+                    </li>
+                </ul>
+            </div>
+            <div id="maincontent">Welkom bij de Rekeningrijder. Hier kunt u al uw informatie omtrent rekeningrijden opvragen en waar nodig wijzigen.</div>
+        </div>
+    </h:body>
+</html>
+

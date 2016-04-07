@@ -6,6 +6,7 @@
 package model;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -18,13 +19,41 @@ public class Account implements Serializable {
 
     @Id
     private int bsn;
+    @Column(unique = true)
+    private String email;
     private String password;
+    private boolean confirmed;
+    private String confirmationId;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+
+    public String getConfirmationId() {
+        return confirmationId;
+    }
+
+    public void setConfirmationId(String confirmationId) {
+        this.confirmationId = confirmationId;
+    }
 
     public int getBsn() {
         return bsn;
     }
 
-    public void setEmailAddress(int bsn) {
+    public void setBsn(int bsn) {
         this.bsn = bsn;
     }
 

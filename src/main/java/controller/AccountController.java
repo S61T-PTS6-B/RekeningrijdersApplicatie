@@ -67,7 +67,7 @@ public class AccountController implements Serializable {
         int bsnint = Integer.parseInt(bsn);
         this.activeUser = service.LogIn(bsnint, password);
         if (this.activeUser == null) {
-            message = "BSN of wachtwoord is incorrect";
+            message = "Inloggen mislukt. Controleer of uw BSN en wachtwoord correct ingevuld is en of uw account geactiveerd is.";
             return "login.xhtml";
         } else {
             message = "";

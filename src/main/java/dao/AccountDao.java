@@ -5,8 +5,6 @@
  */
 package dao;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -39,7 +37,32 @@ public class AccountDao implements IAccountDao {
     }    
 
     @Override
-    public boolean RegisterUser(int bsn, String password) {
+    public boolean RegisterUser(Account user) {
+        Account acc = em.find(Account.class, user.getBsn());
+        if (acc == null) {
+            em.persist(user);
+            return true;
+        }
         return false;
+    }
+
+    @Override
+    public boolean UserIsActivated(int bsn) {
+        Account acc = em.find(Account.class, bsn);
+        if (acc == null) {
+            return false;
+        }
+        return acc.isConfirmed();
+    }
+
+    @Override
+    public void ActivateUser(Account user) {
+        user.setConfirmed(true);
+        em.merge(user);
+    }
+
+    @Override
+    public Account FindAccount(int bsn) {
+        return em.find(Account.class, bsn);
     }
 }

@@ -15,5 +15,11 @@ public interface IAccountDao {
         
     Account AuthenticateUser(int bsn, String password);
     
-    boolean RegisterUser(int bsn, String password);
+    boolean RegisterUser(Account user);
+    
+    boolean UserIsActivated(int bsn);
+    
+    void ActivateUser(Account user);
+    
+    Account FindAccount(int bsn);
 }

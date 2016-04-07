@@ -1,8 +1,13 @@
+C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\controller\RegisterController.java
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\service\IRekeningrijderService.java
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\service\RekeningrijderService.java
+C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\utilities\BsnValidator.java
+C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\utilities\Mailing.java
+C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\controller\ActivationServlet.java
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\model\Account.java
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\utilities\PasswordStorage.java
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\dao\AccountDao.java
-C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\utilities\BsnValidator.java
+C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\dao\IExternalCommunication.java
+C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\dao\ExternalCommunication.java
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\dao\IAccountDao.java
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\controller\AccountController.java

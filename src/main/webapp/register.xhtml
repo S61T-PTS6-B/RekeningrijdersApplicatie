@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>De Rekeningrijder - Registreren</title>
         <h:outputStylesheet library="css" name="registerstyle.css"/>
@@ -14,18 +15,22 @@
                 <h2 id="headertext">Registreren</h2>
             </div>
             <h:form id="registerform">                
-                E-mailadres
+                BSN
                 <br></br>
-                <h:inputText id="emailaddress" a:placeholder="E-mailadres"/>
+                <h:inputText id="bsn" a:placeholder="Burgerservicenummer" value="#{registerController.bsn}">
+                    <f:validator validatorId="BsnValidator"/>
+                </h:inputText>
+                <h:message for="bsn" style="color:red" />
                 <br></br>
                 <br></br>
                 Wachtwoord
                 <br></br>
-                <h:inputSecret id="password1" a:placeholder="Wachtwoord"/>
+                <h:inputSecret id="password1" a:placeholder="Wachtwoord" value="#{registerController.password1}"/>
                 <br></br>
-                <h:inputSecret id="password2" a:placeholder="Wachtwoord herhalen"/>
+                <h:inputSecret id="password2" a:placeholder="Wachtwoord herhalen" value="#{registerController.password2}"/>
                 <br></br>
-                <h:commandButton id="btnRegister" value="Registreer"/>                              
+                <h:commandButton id="btnRegister" value="Registreer" action="#{registerController.registerAccount()}"/>
+                <h:outputLabel value="#{registerController.errormessage}" style="color: red"/>
             </h:form>
         </div>
     </h:body>

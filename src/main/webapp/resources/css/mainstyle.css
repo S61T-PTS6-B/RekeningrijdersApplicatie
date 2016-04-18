@@ -101,3 +101,28 @@ div
     transform: translate(-50%, -50%);
     width: 50%;
 }
+
+.order-table
+{   
+    border-collapse: separate;
+    border-spacing: 3px;
+    border: none;
+}
+
+.order-table-header
+{
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;  
+}
+
+.order-table-odd-row
+{
+    
+}
+
+.order-table-even-row
+{
+	
+}

@@ -17,13 +17,15 @@ public class Mailing {
     public static void SendEmail(String dest, String text, String subject) {
         Properties props = System.getProperties();
         props.setProperty("mail.smtp.host", "localhost");
-        Session session = Session.getDefaultInstance(props);
+        props.setProperty("mail.smtp.port", "25");
+        Session session = Session.getInstance(props);
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom("overheid@rekeningrijden.nl");
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(dest));
             message.setSubject(subject);
             message.setText(text);
+            message.setHeader("Content-Type", "text/html");
             Transport.send(message);
         } catch (MessagingException ex) {
             System.out.println("Email not sent: " + ex.toString());

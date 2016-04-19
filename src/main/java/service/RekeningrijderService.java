@@ -9,6 +9,8 @@ import dao.IAccountDao;
 import dao.IExternalCommunication;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import model.Account;
 import utilities.Mailing;
 import utilities.PasswordStorage;
@@ -41,6 +43,7 @@ public class RekeningrijderService implements IRekeningrijderService {
         String email = external.GetEmailFromBsn(bsn);
         if (email == null) {
             //send letter
+            return false;
         }
         else {          
             acc.setBsn(bsn);
@@ -48,16 +51,25 @@ public class RekeningrijderService implements IRekeningrijderService {
             acc.setConfirmed(false);
             String uuid = java.util.UUID.randomUUID().toString();
             acc.setConfirmationId(uuid);
-            String link = "http://localhost:8080/RekeningrijdersApplicatie/activateaccount?bsn=" + bsn + "&uuid=" + uuid;
-            
-            Mailing.SendEmail(email, "Dank u voor het registreren voor De Rekeningrijder Online. Klik op de volgende link om uw account te activeren: " + link, "Activatie Rekeningrijder Online");
-            try {
+            HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            String fulllink = req.getRequestURL().toString();
+            int endIndex = fulllink.lastIndexOf("/");
+            if (endIndex != -1)  
+            {
+                fulllink = fulllink.substring(0, endIndex);
+            }
+            String link = fulllink + "/activateaccount?bsn=" + bsn + "&uuid=" + uuid; 
+            if (accountDao.RegisterUser(acc)) {
+                Mailing.SendEmail(email, "<p>Dank u voor het registreren voor De Rekeningrijder Online. Klik op onderstaande link om uw account te activeren: <br></br><br></br> <a>" + link + "</a></p>", "Activatie Rekeningrijder Online");
+                try {
                 acc.setPassword(PasswordStorage.createHash(password));
-            } catch (PasswordStorage.CannotPerformOperationException ex) {
-                return false;
-            }           
+                } catch (PasswordStorage.CannotPerformOperationException ex) {
+                    return false;
+                }
+                return true;
+            }
+            return false;
         }
-        return accountDao.RegisterUser(acc);
     }   
 
     @Override

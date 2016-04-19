@@ -13,10 +13,9 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class ExternalCommunication implements IExternalCommunication {
-
+    
     @Override
     public String GetEmailFromBsn(int bsn) {
         return "gijshendrickx@hotmail.com";
-    }
-    
+    }   
 }

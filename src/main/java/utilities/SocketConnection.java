@@ -56,6 +56,6 @@ public class SocketConnection {
         client.send(msg.toString());
         
         return ret;
-        }
+        
     }
 }

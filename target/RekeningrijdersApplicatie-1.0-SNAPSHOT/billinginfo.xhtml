@@ -31,16 +31,36 @@
                 </ul>
             </div>
             <div id="maincontent">
-                <h:dataTable id="billstable" border="1" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row">
+                <h:dataTable id="billstable" border="1" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" value="#{accountController.GetBillsList()}" var="b">
                     <h:column>
                         <f:facet name="header">
-                            <h:outputText value="Kolomnaam 1"/>
+                            <h:outputText value="Periode"/>
                         </f:facet>
+                        #{b.period}
                     </h:column>
                     <h:column>
                         <f:facet name="header">
-                            <h:outputText value="Kolomnaam 2"/>
-                        </f:facet>                     
+                            <h:outputText value="Bedrag"/>
+                        </f:facet>
+                        €#{b.amount}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Aantal kilometers"/>
+                        </f:facet> 
+                        #{b.kilometers}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Verplaatsingen"/>
+                        </f:facet> 
+                        <h:link outcome="billinginfo.xhtml" value="Bekijk"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Betaald?"/>
+                        </f:facet> 
+                        #{b.paid}
                     </h:column>
                 </h:dataTable>
             </div>

@@ -119,10 +119,12 @@ div
 
 .order-table-odd-row
 {
-    
+    padding: 5px;
+    text-align: center;
 }
 
 .order-table-even-row
 {
-	
+    padding: 5px;
+    text-align: center;
 }

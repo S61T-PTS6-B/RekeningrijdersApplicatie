@@ -6,7 +6,6 @@
 package service;
 
 import dao.IAccountDao;
-import dao.IExternalCommunication;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.faces.context.FacesContext;
@@ -25,9 +24,6 @@ public class RekeningrijderService implements IRekeningrijderService {
     @EJB
     private IAccountDao accountDao;
     
-    @EJB
-    private IExternalCommunication external;
-    
     @Override
     public Account LogIn(int bsn, String password) 
     {
@@ -38,10 +34,9 @@ public class RekeningrijderService implements IRekeningrijderService {
     }
 
     @Override
-    public boolean Register(int bsn, String password) {
+    public boolean Register(int bsn, String password, String email) {
         Account acc = new Account();
-        String email = external.GetEmailFromBsn(bsn);
-        if (email == null) {
+        if (email == null || email.equals("")) {
             //send letter
             return false;
         }

@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>De Rekeningrijder - Rekeningen</title>
         <h:outputStylesheet library="css" name="mainstyle.css"/>
@@ -61,6 +62,15 @@
                             <h:outputText value="Betaald?"/>
                         </f:facet> 
                         #{b.paid}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Betalen met PayPal"/>
+                        </f:facet>
+                        <form action="expresscheckout.jsp" method="POST">
+                            #{session.setAttribute("Payment_Amount", Integer.toString(b.amount))}
+                            <input type='image' name='submit' src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif' border='0' align='top' alt='Check out with PayPal'/>
+                        </form>
                     </h:column>
                 </h:dataTable>
             </div>

@@ -10,16 +10,16 @@ package model;
  * @author Gijs
  */
 public class BillingDummy {
-    private String paid;
+    private boolean paid;
     private int kilometers;   
     private String period;
     private int amount;
     
-    public String getPaid() {
+    public boolean getPaid() {
         return paid;
     }
 
-    public void setPaid(String paid) {
+    public void setPaid(boolean paid) {
         this.paid = paid;
     }
 

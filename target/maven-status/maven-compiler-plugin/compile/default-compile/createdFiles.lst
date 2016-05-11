@@ -2,9 +2,7 @@ utilities\PasswordStorage$CannotPerformOperationException.class
 service\RekeningrijderService.class
 controller\ActivationServlet.class
 model\BillingDummy.class
-dao\IExternalCommunication.class
 utilities\BsnValidator.class
-dao\ExternalCommunication.class
 controller\RegisterController.class
 utilities\PasswordStorage$InvalidHashException.class
 utilities\SocketConnection$1.class

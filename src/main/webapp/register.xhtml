@@ -10,14 +10,16 @@
         <h:outputStylesheet library="css" name="bootstrap.css"/>
     </h:head>
     <h:body>
+        <script src="register.js" type="text/javascript"></script>
         <div id="register">
             <div id="registerheader">
                 <h2 id="headertext">Registreren</h2>
             </div>
-            <h:form id="registerform">                
+            <h:form id="registerform">
+                <h:inputHidden id="emailfromsocket" value="#{registerController.email}"/>
                 BSN
                 <br></br>
-                <h:inputText id="bsn" a:placeholder="Burgerservicenummer" value="#{registerController.bsn}">
+                <h:inputText id="bsn" a:placeholder="Burgerservicenummer" value="#{registerController.bsn}" onchange="getEmailFromBsn()">
                     <f:validator validatorId="BsnValidator"/>
                 </h:inputText>
                 <h:message for="bsn" style="color:red" />

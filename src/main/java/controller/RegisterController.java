@@ -28,6 +28,15 @@ public class RegisterController implements Serializable {
     private String password1;
     private String password2;
     private String errormessage; 
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getBsn() {
         return bsn;
@@ -69,7 +78,7 @@ public class RegisterController implements Serializable {
             return "register.xhtml";
         }
         int bsnint = Integer.parseInt(bsn);
-        if (service.Register(bsnint, password1)) {
+        if (service.Register(bsnint, password1, email)) {
             return "successfulregistration.xhtml";
         } 
         errormessage = "Registratie mislukt. Mogelijk is uw BSN niet correct ingevuld of bestaat er al een account met dit BSN.";

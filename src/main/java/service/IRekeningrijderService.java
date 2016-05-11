@@ -28,7 +28,7 @@ public interface IRekeningrijderService
      * @param password
      * @return the account object associated with the new user.
      */
-    boolean Register(int bsn, String password);
+    boolean Register(int bsn, String password, String email);
     
     /**
      * Used to activate a user account. When activated, the account is usable.

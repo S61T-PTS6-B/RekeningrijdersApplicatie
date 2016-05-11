@@ -76,7 +76,7 @@ div
     margin-left: 20px;
 }
 
-#btnLogout
+.buttons
 {
     background-color: #4CAF50;
     color: white;
@@ -127,4 +127,17 @@ div
 {
     padding: 5px;
     text-align: center;
+}
+
+#profiletable
+{
+    margin: 10px;
+    cellspacing: 10px;
+}
+
+#carslist
+{
+    text-decoration: none;
+    list-style-type: none;
+    padding: 0;
 }

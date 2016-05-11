@@ -35,19 +35,19 @@ public class BillingController {
         bill.setAmount(34);
         bill.setKilometers(257);
         bill.setPeriod("01-01-2016 - 01-02-2016");
-        bill.setPaid("Ja");
+        bill.setPaid(true);
         
         BillingDummy bill2 = new BillingDummy();
         bill2.setAmount(45);
         bill2.setKilometers(311);
         bill2.setPeriod("01-02-2016 - 01-03-2016");
-        bill2.setPaid("Ja");
+        bill2.setPaid(true);
         
         BillingDummy bill3 = new BillingDummy();
         bill3.setAmount(45);
         bill3.setKilometers(311);
         bill3.setPeriod("01-02-2016 - 01-03-2016");
-        bill3.setPaid("Nee");
+        bill3.setPaid(false);
         
         bills.add(bill);
         bills.add(bill2);

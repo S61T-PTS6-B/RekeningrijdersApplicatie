@@ -1,9 +1,8 @@
-var wsURINAW = "ws://145.93.104.224:8080/RekeningAdministratieOverheid/NAWSocket";
-var wsURICarTracker = "ws://145.93.104.224:8080/RekeningAdministratieOverheid/CarTrackerSocket";
+var wsURINAW = "ws://145.93.105.142:8080/RekeningAdministratieOverheid/NAWSocket";
+var wsURICarTracker = "ws://145.93.105.142:8080/RekeningAdministratieOverheid/CarTrackerSocket";
 window.addEventListener("load", onLoad, false);
 var websocketnaw = null;
 var websocketcartracker = null;
-
 
 function connect() {
     websocketnaw = new WebSocket(wsURINAW);
@@ -43,7 +42,7 @@ function connect() {
 function onLoad() {
     connect();
     var bsn = document.getElementById("bsncontainer").innerHTML;
-    var message = JSON.stringify({'bsn': bsn});
+    var message = JSON.stringify({'bsn' : bsn , 'newphone' : '' , 'newmail' : ''});
     sendMessage(message, websocketnaw);
     sendMessage(message, websocketcartracker);
 }
@@ -93,16 +92,31 @@ function FillCarTrackerFields(message) {
 
 function OnChangePhoneClick() {
     var newphone = window.prompt("Voer je nieuwe telefoonnummer in:");
+    if (!validatePhone(newphone)) {
+        window.alert("Het door u ingevulde nummer is geen geldig telefoonnummer.");
+    } else {
+        var bsn = document.getElementById("bsncontainer").innerHTML;
+        var message = JSON.stringify({'bsn' : bsn , 'newphone' : newphone , 'newmail' : ""});
+        sendMessage(message, websocketnaw);
+    }
 }
 
 function OnChangeEmailClick() {
-    var newemail = window.prompt("Voer je nieuwe e-mailadres in:");
-    if (!validateEmail(newemail)) {
-        window.alert("Geen geldig e-mailadres.");
+    var newmail = window.prompt("Voer je nieuwe e-mailadres in:");
+    if (!validateEmail(newmail)) {
+        window.alert("Het door u ingevulde adres is geen geldig e-mailadres.");
+    } else {
+        var bsn = document.getElementById("bsncontainer").innerHTML;
+        var message = JSON.stringify({'bsn' : bsn , 'newphone' : "" , 'newmail' : newmail});
+        sendMessage(message, websocketnaw);
     }
 }
 
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
+}
+
+function validatePhone(phone) {
+    return /^\d+$/.test(phone);
 }

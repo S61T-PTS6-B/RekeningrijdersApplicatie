@@ -3,10 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
-        <title>Facelet Title</title>
+        <title>De Rekeningrijder - Betaling</title>
+        <h:outputStylesheet library="css" name="mainstyle.css"/>
     </h:head>
-    <h:body>
-        Your bill has been paid.
+    <h:body> 
+        #{billingController.OnSuccessfulPayment()}
+        <div id="successpaymenttext">
+            Uw betaling voor #{billingController.billName} wordt op dit moment verwerkt...
+        </div>
     </h:body>
 </html>
 

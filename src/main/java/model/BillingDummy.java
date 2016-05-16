@@ -13,7 +13,7 @@ public class BillingDummy {
     private boolean paid;
     private int kilometers;   
     private String period;
-    private int amount;
+    private double amount;
     
     public boolean getPaid() {
         return paid;
@@ -39,11 +39,11 @@ public class BillingDummy {
         this.period = period;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 }

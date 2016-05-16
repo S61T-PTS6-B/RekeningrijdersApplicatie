@@ -141,3 +141,28 @@ div
     list-style-type: none;
     padding: 0;
 }
+
+#whatispaypal
+{
+    font-size: xx-small;
+}
+
+#successpaymenttext
+{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 50%;
+}
+
+#finishedpaymenttext
+{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 50%;
+}

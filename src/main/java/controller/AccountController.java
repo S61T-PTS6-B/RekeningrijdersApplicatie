@@ -6,14 +6,11 @@
 package controller;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import model.Account;
-import model.BillingDummy;
 import service.IRekeningrijderService;
 /**
  *
@@ -77,32 +74,4 @@ public class AccountController implements Serializable {
             return "main.xhtml";
         }
     }   
-    
-    public List<BillingDummy> GetBillsList() {
-        List<BillingDummy> bills = new ArrayList<>();
-        
-        BillingDummy bill = new BillingDummy();
-        bill.setAmount(34);
-        bill.setKilometers(257);
-        bill.setPeriod("01-01-2016 - 01-02-2016");
-        bill.setPaid(true);
-        
-        BillingDummy bill2 = new BillingDummy();
-        bill2.setAmount(45);
-        bill2.setKilometers(311);
-        bill2.setPeriod("01-02-2016 - 01-03-2016");
-        bill2.setPaid(true);
-        
-        BillingDummy bill3 = new BillingDummy();
-        bill3.setAmount(45);
-        bill3.setKilometers(311);
-        bill3.setPeriod("01-02-2016 - 01-03-2016");
-        bill3.setPaid(false);
-        
-        bills.add(bill);
-        bills.add(bill2);
-        bills.add(bill3);
-        
-        return bills;
-    }
 }

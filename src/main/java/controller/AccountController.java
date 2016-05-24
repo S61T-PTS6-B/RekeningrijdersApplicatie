@@ -10,6 +10,7 @@ import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import model.Account;
 import service.IRekeningrijderService;
 /**
@@ -73,5 +74,15 @@ public class AccountController implements Serializable {
             message = "";
             return "main.xhtml";
         }
-    }   
+    } 
+    
+    public void CheckForActiveSession() {
+        try {
+            if (activeUser == null) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
+            }
+        } catch (Exception ex) {
+            //swallow
+        }
+    }
 }

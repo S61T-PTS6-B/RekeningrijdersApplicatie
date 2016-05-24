@@ -1,7 +1,9 @@
+model\Movement.class
 utilities\PasswordStorage$CannotPerformOperationException.class
 service\RekeningrijderService.class
 controller\ActivationServlet.class
 model\BillingDummy.class
+controller\MovementsController.class
 utilities\BsnValidator.class
 controller\RegisterController.class
 utilities\PasswordStorage$InvalidHashException.class

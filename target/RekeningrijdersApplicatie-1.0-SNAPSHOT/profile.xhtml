@@ -2,6 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
+    #{accountController.CheckForActiveSession()}
     <h:head>
         <title>De Rekeningrijder - Mijn gegevens</title>
         <h:outputStylesheet library="css" name="mainstyle.css"/>
@@ -32,6 +33,7 @@
             </div>
             <div id="maincontent">
                 <h3>Mijn gegevens</h3>
+                <p id="profileconnectionmessage" style="color: red;"></p>
                 <table id="profiletable" style="width: 100%">
                     <tr>
                         <td>Naam:</td>

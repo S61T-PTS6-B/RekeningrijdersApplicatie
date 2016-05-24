@@ -2,6 +2,7 @@ C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\cont
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\service\IRekeningrijderService.java
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\service\RekeningrijderService.java
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\utilities\SocketConnection.java
+C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\controller\MovementsController.java
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\controller\BillingController.java
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\utilities\BsnValidator.java
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\utilities\Mailing.java
@@ -10,5 +11,6 @@ C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\mode
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\model\BillingDummy.java
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\utilities\PasswordStorage.java
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\dao\AccountDao.java
+C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\model\Movement.java
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\dao\IAccountDao.java
 C:\Users\Gijs\Documents\GitHub\PTS6\RekeningrijdersApplicatie\src\main\java\controller\AccountController.java

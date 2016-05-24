@@ -1,4 +1,4 @@
-var wsURINAW = "ws://145.93.104.224:8080/RekeningAdministratieOverheid/NAWSocket";
+var wsURINAW = "ws://145.93.104.169:8080/RekeningAdministratieOverheid/NAWSocket";
 window.addEventListener("load",onLoad,false);
 var websocket = null;
 

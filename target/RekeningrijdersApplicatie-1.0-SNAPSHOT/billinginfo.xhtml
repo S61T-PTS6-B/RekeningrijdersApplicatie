@@ -4,6 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    #{accountController.CheckForActiveSession()}
     <h:head>
         <title>De Rekeningrijder - Rekeningen</title>
         <h:outputStylesheet library="css" name="mainstyle.css"/>
@@ -32,6 +33,7 @@
                 </ul>
             </div>
             <div id="maincontent">
+                <p id="billingconnectionmessage" style="color: red;"></p>
                 <h:dataTable id="billstable" border="1" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" value="#{billingController.bills}" var="b">
                     <h:column>
                         <f:facet name="header">
@@ -43,7 +45,7 @@
                         <f:facet name="header">
                             <h:outputText value="Bedrag"/>
                         </f:facet>
-                        €#{b.amount}
+                        €#{b.amount}0
                     </h:column>
                     <h:column>
                         <f:facet name="header">

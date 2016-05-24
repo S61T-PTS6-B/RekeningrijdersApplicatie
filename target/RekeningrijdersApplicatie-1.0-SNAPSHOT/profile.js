@@ -1,5 +1,5 @@
-var wsURINAW = "ws://145.93.105.142:8080/RekeningAdministratieOverheid/NAWSocket";
-var wsURICarTracker = "ws://145.93.105.142:8080/RekeningAdministratieOverheid/CarTrackerSocket";
+var wsURINAW = "ws://145.93.104.169:8080/RekeningAdministratieOverheid/NAWSocket";
+var wsURICarTracker = "ws://145.93.104.169:8080/RekeningAdministratieOverheid/CarTrackerSocket";
 window.addEventListener("load", onLoad, false);
 var websocketnaw = null;
 var websocketcartracker = null;
@@ -8,16 +8,16 @@ function connect() {
     websocketnaw = new WebSocket(wsURINAW);
     websocketcartracker = new WebSocket(wsURICarTracker);
     websocketcartracker.onerror = function (evt) {
-        console.log("Error: " + evt.data);
+        document.getElementById("profileconnectionmessage").innerHTML = "Kan geen verbinding maken met het administratiesysteem van de overheid. Sommige gegevens kunnen niet worden weergegeven.";
     };
     websocketnaw.onerror = function (evt) {
-        console.log("Error NAWSocket: " + evt.data);
+        document.getElementById("profileconnectionmessage").innerHTML = "Kan geen verbinding maken met het administratiesysteem van de overheid. Sommige gegevens kunnen niet worden weergegeven.";
     };
     websocketcartracker.onopen = function () {
-        console.log("Opened connection CarTrackerSocket: " + wsURICarTracker);
+        document.getElementById("profileconnectionmessage").innerHTML = "";
     };
     websocketnaw.onopen = function () {
-        console.log("Opened connection NAWSocket: " + wsURINAW);
+        document.getElementById("profileconnectionmessage").innerHTML = "";
     };
     websocketnaw.onclose = function () {
         console.log("Closed connection NAWSocket");

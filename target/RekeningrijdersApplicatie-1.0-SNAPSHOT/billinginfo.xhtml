@@ -72,19 +72,24 @@
                     </h:column>
                     <h:column>
                         <f:facet name="header">
-                            <h:outputText value="Betalen met PayPal"/>
+                            <h:outputText value="Selecteer voor betalen"/>
                         </f:facet>
                         <h:panelGroup layout="block" rendered="#{!b.paid}">
                             <h:form>
-                                <h:commandButton image="https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif" action="#{billingController.StartPaypalCheckout()}">
-                                    <f:setPropertyActionListener target="#{billingController.paymentAmount}" value="#{b.amount}"/>
-                                    <f:setPropertyActionListener target="#{billingController.billName}" value="#{b.period}"/>
-                                </h:commandButton>                                
+                                <h:selectBooleanCheckbox value="#{billingController.billsMap[b.period]}">
+                                    <f:ajax event="valueChange" render="billstable"/>
+                                </h:selectBooleanCheckbox>
                             </h:form>
-                            <a id="whatispaypal" href="https://www.paypal.com/webapps/mpp/paypal-popup">Wat is PayPal?</a>
                         </h:panelGroup>
                     </h:column>
-                </h:dataTable>
+                </h:dataTable>                
+                <br></br>
+                <br></br>
+                <h:form>
+                    <h:commandButton image="https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif" action="#{billingController.StartPaypalCheckout()}">
+                    </h:commandButton>                                
+                </h:form>
+                <a id="whatispaypal" href="https://www.paypal.com/webapps/mpp/paypal-popup">Wat is PayPal?</a>
                 <br></br>
                 <br></br>
                 <h:outputLabel value="#{billingController.message}" style="color:red"/>

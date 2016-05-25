@@ -62,10 +62,18 @@ public class BillingController implements Serializable {
     
     @EJB
     private IRekeningrijderService service;    
-    private double paymentAmount;
-    private String billName;
     private String message;
     private List<BillingDummy> bills = new ArrayList<>();
+    private List<BillingDummy> billsToPay = new ArrayList<>();
+    private Map<String, Boolean> billsMap = new HashMap<>();
+
+    public Map<String, Boolean> getBillsMap() {
+        return billsMap;
+    }
+
+    public void setBillsMap(Map<String, Boolean> billsMap) {
+        this.billsMap = billsMap;
+    }
 
     public List<BillingDummy> getBills() {
         return bills;
@@ -83,23 +91,7 @@ public class BillingController implements Serializable {
         this.message = message;
     }
     
-    public BillingController() {}
-
-    public String getBillName() {
-        return billName;
-    }
-
-    public void setBillName(String billName) {
-        this.billName = billName;
-    }   
-
-    public double getPaymentAmount() {
-        return paymentAmount;
-    }
-
-    public void setPaymentAmount(double paymentAmount) {
-        this.paymentAmount = paymentAmount;
-    } 
+    public BillingController() {} 
 
     @PostConstruct
     public void FillBillsList() {      
@@ -113,7 +105,7 @@ public class BillingController implements Serializable {
         bill2.setAmount(45.0);
         bill2.setKilometers(311);
         bill2.setPeriod("01-02-2016 - 01-03-2016");
-        bill2.setPaid(true);
+        bill2.setPaid(false);
         
         BillingDummy bill3 = new BillingDummy();
         bill3.setAmount(63.0);
@@ -124,28 +116,44 @@ public class BillingController implements Serializable {
         bills.add(bill);
         bills.add(bill2);
         bills.add(bill3);
+        billsMap.put(bill.getPeriod(), false);
+        billsMap.put(bill2.getPeriod(), false);
+        billsMap.put(bill3.getPeriod(), false);
     } 
     
     
     
-    public void StartPaypalCheckout() {
+    public void StartPaypalCheckout() { 
+        message = "";
+        for (BillingDummy b : bills) {
+            if (!b.getPaid() && billsMap.get(b.getPeriod())) {
+                billsToPay.add(b);
+            }
+        }
+        if (billsToPay.isEmpty()) {
+            message = "Selecteer minimaal één rekening die u wilt betalen.";
+            return;
+        }
         PaymentDetailsType paymentDetails = new PaymentDetailsType();
         paymentDetails.setPaymentAction(PaymentActionCodeType.fromValue("Sale"));
-        PaymentDetailsItemType item = new PaymentDetailsItemType();
-        BasicAmountType amt = new BasicAmountType();
-        amt.setCurrencyID(CurrencyCodeType.EUR);
-        String amountstring = String.valueOf(paymentAmount);
-        amt.setValue(amountstring);
-        item.setQuantity(1);
-        billName = "Rekeningrijden periode " + billName;
-        item.setName(billName);
-        item.setAmount(amt);
         List<PaymentDetailsItemType> lineItems = new ArrayList<>();
-        lineItems.add(item);
+        double totalAmount = 0;
+        for (BillingDummy b : billsToPay) {
+            PaymentDetailsItemType item = new PaymentDetailsItemType();
+            BasicAmountType amt = new BasicAmountType();
+            amt.setCurrencyID(CurrencyCodeType.EUR);            
+            item.setQuantity(1);
+            String amountstring = String.valueOf(b.getAmount());
+            amt.setValue(amountstring);  
+            item.setName("Rekeningrijden " + b.getPeriod());
+            item.setAmount(amt);
+            lineItems.add(item);
+            totalAmount += b.getAmount();
+        }
         paymentDetails.setPaymentDetailsItem(lineItems);
         BasicAmountType orderTotal = new BasicAmountType();
         orderTotal.setCurrencyID(CurrencyCodeType.EUR);
-        orderTotal.setValue(amountstring);
+        orderTotal.setValue(String.valueOf(totalAmount));
         paymentDetails.setOrderTotal(orderTotal);
         List<PaymentDetailsType> paymentDetailsList = new ArrayList<>();
         paymentDetailsList.add(paymentDetails);
@@ -170,14 +178,7 @@ public class BillingController implements Serializable {
         PayPalAPIInterfaceServiceService paypalservice = new PayPalAPIInterfaceServiceService(sdkConfig);
         try {
             SetExpressCheckoutResponseType setExpressCheckoutResponse = paypalservice.setExpressCheckout(setExpressCheckoutReq);
-            String token = setExpressCheckoutResponse.getToken();
-            bills.remove(2);
-            BillingDummy bill3 = new BillingDummy();
-            bill3.setAmount(63.0);
-            bill3.setKilometers(454);
-            bill3.setPeriod("01-03-2016 - 01-04-2016");
-            bill3.setPaid(true);
-            bills.add(bill3);
+            String token = setExpressCheckoutResponse.getToken();           
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
             ec.redirect("https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=" + token);                 
         } catch (SSLConfigurationException | InvalidCredentialException | IOException | HttpErrorException | InvalidResponseDataException | ClientActionRequiredException | MissingCredentialException | InterruptedException | OAuthException | ParserConfigurationException | SAXException ex) {

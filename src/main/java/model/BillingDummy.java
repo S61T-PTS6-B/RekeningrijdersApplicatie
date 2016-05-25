@@ -13,7 +13,7 @@ public class BillingDummy {
     private boolean paid;
     private int kilometers;   
     private String period;
-    private double amount;
+    private double amount;  
     
     public boolean getPaid() {
         return paid;

@@ -2,8 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     #{accountController.CheckForActiveSession()}
     <h:head>
         <title>De Rekeningrijder - Rekeningen</title>
@@ -56,8 +55,13 @@
                     <h:column>
                         <f:facet name="header">
                             <h:outputText value="Verplaatsingen"/>
-                        </f:facet> 
-                        <h:link outcome="billinginfo.xhtml" value="Bekijk"/>
+                        </f:facet>
+                        <h:form id="gotomovements">
+                            <h:commandLink value="Bekijk" action="#{billingController.GoToMovements()}">
+                                <f:setPropertyActionListener target="#{billingController.selectedBill}" value="#{b}"/>
+                            </h:commandLink>
+                        </h:form>
+                        <h:link outcome="movements.xhtml" value="Bekijk" target="_blank"/>
                     </h:column>
                     <h:column>
                         <f:facet name="header">

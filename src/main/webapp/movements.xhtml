@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    #{accountController.CheckForActiveSession()}
     <h:head>
         <title>Verplaatsingen</title>
         <h:outputStylesheet library="css" name="movementsstyle.css"/>
@@ -15,7 +16,7 @@
             <h1>Verplaatsingen</h1>
             <br/>
             <br/>
-            <ui:repeat value="#{movements.movements}" var="m">
+            <ui:repeat value="#{billingController.movements}" var="m">
                 <a onclick="drawLine(#{m.latStart},#{m.longStart},#{m.latEnd},#{m.longEnd})">#{m.date.toLocaleString()}</a><br/>
             </ui:repeat>         
         </div>

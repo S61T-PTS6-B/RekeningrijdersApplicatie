@@ -5,8 +5,10 @@
  */
 package service;
 
+import dao.IAccountDao;
 import java.util.List;
 import model.Account;
+import model.Invoice;
 
 /**
  *
@@ -14,6 +16,11 @@ import model.Account;
  */
 public interface IRekeningrijderService 
 {
+    /**
+     * Set the data access object for the service
+     * @param dao, the dao to be set
+     */
+    void setDao(IAccountDao dao);
     /**
      * Used to log in the user
      * @param bsn
@@ -26,6 +33,7 @@ public interface IRekeningrijderService
      * Used to register a new user
      * @param bsn
      * @param password
+     * @param email
      * @return the account object associated with the new user.
      */
     boolean Register(int bsn, String password, String email);
@@ -37,4 +45,15 @@ public interface IRekeningrijderService
      * @return true when activation is successful, false otherwise
      */
     boolean ActivateUser(String bsn, String uuid);
+    
+    /**
+     * Used to initiate and complete a checkout with PayPal
+     * @param invoices the invoices the user wants to pay
+     */
+    void DoPayPalCheckout(List<Invoice> invoices);
+    
+    /**
+     * Gets called when the user has successfully paid on the PayPal site
+     */
+    boolean OnSuccessfulPayment();
 }

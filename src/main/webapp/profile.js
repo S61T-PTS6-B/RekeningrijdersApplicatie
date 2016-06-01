@@ -1,5 +1,5 @@
-var wsURINAW = "ws://145.93.104.169:8080/RekeningAdministratieOverheid/NAWSocket";
-var wsURICarTracker = "ws://145.93.104.169:8080/RekeningAdministratieOverheid/CarTrackerSocket";
+var wsURINAW = "ws://145.93.105.63:8080/RekeningAdministratieOverheid/NAWSocket";
+var wsURICarTracker = "ws://145.93.105.63:8080/RekeningAdministratieOverheid/CarTrackerSocket";
 window.addEventListener("load", onLoad, false);
 var websocketnaw = null;
 var websocketcartracker = null;

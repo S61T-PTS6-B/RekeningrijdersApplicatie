@@ -1,10 +1,10 @@
 model\Movement.class
+utilities\AESEncrypt.class
 utilities\PasswordStorage$CannotPerformOperationException.class
 service\RekeningrijderService.class
 controller\ActivationServlet.class
-model\BillingDummy.class
-controller\MovementsController.class
 utilities\BsnValidator.class
+model\Invoice.class
 controller\RegisterController.class
 utilities\PasswordStorage$InvalidHashException.class
 utilities\SocketConnection$1.class

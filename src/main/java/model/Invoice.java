@@ -9,12 +9,38 @@ package model;
  *
  * @author Gijs
  */
-public class BillingDummy {
+public class Invoice {
     private boolean paid;
     private int kilometers;   
-    private String period;
+    private int month;
+    private int year;
     private double amount;  
+    private String licensePlate;
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
     
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
     public boolean getPaid() {
         return paid;
     }
@@ -32,11 +58,7 @@ public class BillingDummy {
     }
 
     public String getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(String period) {
-        this.period = period;
+        return this.month + " - " + this.year;
     }
 
     public double getAmount() {

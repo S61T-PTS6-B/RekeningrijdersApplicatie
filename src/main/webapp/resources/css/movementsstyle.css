@@ -25,5 +25,7 @@
     float:left;
     width: 18%;
     margin: 1%;
+    overflow: scroll;
+    height: 900px;
 }
 

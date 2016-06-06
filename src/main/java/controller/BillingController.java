@@ -7,6 +7,7 @@ package controller;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.ConnectException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -182,7 +183,7 @@ public class BillingController implements Serializable {
                 movements.add(m);
             } 
         }
-        catch (NotFoundException ex) {
+        catch (NotFoundException | ConnectException ex) {
             message = "De verplaatsingen konden niet worden opgehaald. Probeer het later nog eens.";
             return "billinginfo.xhtml";
         }

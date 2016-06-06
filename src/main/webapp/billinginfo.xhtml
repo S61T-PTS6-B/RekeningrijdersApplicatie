@@ -57,11 +57,9 @@
                             <f:facet name="header">
                                 <h:outputText value="Verplaatsingen"/>
                             </f:facet>
-                            <h:form id="gotomovements">
-                                <h:commandLink value="Bekijk" action="#{billingController.GoToMovements()}">
-                                    <f:setPropertyActionListener target="#{billingController.selectedBill}" value="#{b}"/>
-                                </h:commandLink>
-                            </h:form>
+                            <h:commandLink value="Bekijk" action="#{billingController.GoToMovements()}">
+                                <f:setPropertyActionListener target="#{billingController.selectedBill}" value="#{b}"/>
+                            </h:commandLink>
                         </h:column>
                         <h:column>
                             <f:facet name="header">

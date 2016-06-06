@@ -54,6 +54,6 @@ public class ServiceTest {
     @Test
     public void ActivatedTest() {
         when(dao.UserIsActivated(acc1.getBsn())).thenReturn(true);
-        assertFalse(service.ActivateUser(acc1.getBsn() + "", ""));
+        assertFalse(service.ActivateUser(acc1.getBsn() + "", "jhh"));
     }
 }

@@ -19,6 +19,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -150,32 +151,40 @@ public class BillingController implements Serializable {
     } 
     
     public String GoToMovements() throws Exception {
+        movements.clear();
+        message = "";
         Client client = ClientBuilder.newClient();
         //String id = selectedBill.getLicensePlate();
         String id = "Cas van Gool";
         String send = "id=" + id  + "&month=" + selectedBill.getMonth() + "&year=" + selectedBill.getYear();
         String encrp = AESEncrypt.encrypt(send);
-        WebTarget resource = client.target("http://145.93.81.135:8080/VerplaatsingSysteem/Rest/carTrackers/getMonth?code=" + encrp);
-        String response = resource.request(MediaType.APPLICATION_JSON).get(String.class);
-        JSONObject obj = new JSONObject(AESEncrypt.decrypt(response));
-        JSONArray arr = obj.getJSONArray("locations");
-        for (int i=0; i<arr.length(); i = i++) {
-            JSONObject beginobj = arr.getJSONObject(i);
-            JSONObject endobj;
-            try {
-                endobj = arr.getJSONObject(i+1);
-            } catch (JSONException ex) {
-                endobj = beginobj;
-            }
-            Movement m = new Movement();
-            m.setLatStart(beginobj.getDouble("lat"));
-            m.setLongStart(beginobj.getDouble("long"));
-            m.setLatEnd(endobj.getDouble("lat"));
-            m.setLongEnd(endobj.getDouble("long"));
-            DateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");         
-            m.setDate(format.parse(beginobj.getString("date")));
-            movements.add(m);
-        }     
+        try {
+            WebTarget resource = client.target("http://145.93.81.63:8080/VerplaatsingSysteem/Rest/carTrackers/getMonth?code=" + encrp);
+            String response = resource.request(MediaType.APPLICATION_JSON).get(String.class);
+            JSONObject obj = new JSONObject(AESEncrypt.decrypt(response));
+            JSONArray arr = obj.getJSONArray("locations");
+            for (int i=0; i<arr.length(); i++) {
+                JSONObject beginobj = arr.getJSONObject(i);
+                JSONObject endobj;
+                try {
+                    endobj = arr.getJSONObject(i+1);
+                } catch (JSONException ex) {
+                    endobj = beginobj;
+                }
+                Movement m = new Movement();
+                m.setLatStart(beginobj.getDouble("lat"));
+                m.setLongStart(beginobj.getDouble("long"));
+                m.setLatEnd(endobj.getDouble("lat"));
+                m.setLongEnd(endobj.getDouble("long"));
+                DateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");         
+                m.setDate(format.parse(beginobj.getString("date")));
+                movements.add(m);
+            } 
+        }
+        catch (NotFoundException ex) {
+            message = "De verplaatsingen konden niet worden opgehaald. Probeer het later nog eens.";
+            return "billinginfo.xhtml";
+        }
         return "movements.xhtml";
     }
 }

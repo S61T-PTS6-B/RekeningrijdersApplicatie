@@ -113,7 +113,8 @@ public class RekeningrijderService implements IRekeningrijderService {
     public boolean ActivateUser(String bsn, String uuid) {
         int bsnint = Integer.parseInt(bsn);
         Account acc = accountDao.FindAccount(bsnint);
-        if (acc.getConfirmationId() == null ? uuid == null : acc.getConfirmationId().equals(uuid)) {
+        if (acc != null)
+            if (acc.getConfirmationId() == null && acc.getConfirmationId().equals(uuid)) {
             accountDao.ActivateUser(acc);
             return true;
         }

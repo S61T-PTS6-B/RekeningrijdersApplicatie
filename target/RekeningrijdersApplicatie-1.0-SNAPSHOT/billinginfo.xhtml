@@ -33,59 +33,61 @@
             </div>
             <div id="maincontent">
                 <p id="billingconnectionmessage" style="color: red;"></p>
-                <h:dataTable id="billstable" border="1" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" value="#{billingController.bills}" var="b">
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Periode"/>
-                        </f:facet>
-                        #{b.period}
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Bedrag"/>
-                        </f:facet>
-                        €#{b.amount}0
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Aantal kilometers"/>
-                        </f:facet> 
-                        #{b.kilometers}
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Verplaatsingen"/>
-                        </f:facet>
-                        <h:form id="gotomovements">
-                            <h:commandLink value="Bekijk" action="#{billingController.GoToMovements()}">
-                                <f:setPropertyActionListener target="#{billingController.selectedBill}" value="#{b}"/>
-                            </h:commandLink>
-                        </h:form>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Betaald?"/>
-                        </f:facet> 
-                        <h:panelGroup rendered="#{b.paid}">
-                            Ja
-                        </h:panelGroup>
-                        <h:panelGroup rendered="#{!b.paid}">
-                            Nee
-                        </h:panelGroup>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Selecteer voor betalen"/>
-                        </f:facet>
-                        <h:panelGroup layout="block" rendered="#{!b.paid}">
-                            <h:form>
-                                <h:selectBooleanCheckbox value="#{billingController.billsMap[b.period]}">
-                                    <f:ajax event="valueChange" render=":maincontent:billstable"/>
-                                </h:selectBooleanCheckbox>
+                <h:form id="wrapper">
+                    <h:dataTable id="billstable" border="1" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" value="#{billingController.bills}" var="b">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Periode"/>
+                            </f:facet>
+                            #{b.period}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Bedrag"/>
+                            </f:facet>
+                            €#{b.amount}0
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Aantal kilometers"/>
+                            </f:facet> 
+                            #{b.kilometers}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Verplaatsingen"/>
+                            </f:facet>
+                            <h:form id="gotomovements">
+                                <h:commandLink value="Bekijk" action="#{billingController.GoToMovements()}">
+                                    <f:setPropertyActionListener target="#{billingController.selectedBill}" value="#{b}"/>
+                                </h:commandLink>
                             </h:form>
-                        </h:panelGroup>
-                    </h:column>
-                </h:dataTable>                
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Betaald?"/>
+                            </f:facet> 
+                            <h:panelGroup rendered="#{b.paid}">
+                                Ja
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{!b.paid}">
+                                Nee
+                            </h:panelGroup>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Selecteer voor betalen"/>
+                            </f:facet>
+                            <h:panelGroup layout="block" rendered="#{!b.paid}">
+                                <h:form>
+                                    <h:selectBooleanCheckbox value="#{billingController.billsMap[b.period]}">
+                                        <f:ajax event="valueChange" render=":wrapper:billstable"/>
+                                    </h:selectBooleanCheckbox>
+                                </h:form>
+                            </h:panelGroup>
+                        </h:column>
+                    </h:dataTable> 
+                </h:form>
                 <br></br>
                 <br></br>
                 <h:form>

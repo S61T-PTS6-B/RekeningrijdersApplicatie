@@ -80,7 +80,7 @@
                         <h:panelGroup layout="block" rendered="#{!b.paid}">
                             <h:form>
                                 <h:selectBooleanCheckbox value="#{billingController.billsMap[b.period]}">
-                                    <f:ajax event="valueChange" render="maincontent:billstable"/>
+                                    <f:ajax event="valueChange" render=":maincontent:billstable"/>
                                 </h:selectBooleanCheckbox>
                             </h:form>
                         </h:panelGroup>

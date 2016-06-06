@@ -128,6 +128,7 @@ public class BillingController implements Serializable {
     
     public void StartPaypalCheckout() { 
         message = "";
+        billsToPay.clear();
         for (Invoice b : bills) {
             if (!b.getPaid() && billsMap.get(b.getPeriod())) {
                 billsToPay.add(b);

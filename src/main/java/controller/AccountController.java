@@ -5,13 +5,26 @@
  */
 package controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import model.Account;
+import org.json.JSONException;
+import org.json.JSONObject;
 import service.IRekeningrijderService;
 /**
  *
@@ -83,6 +96,33 @@ public class AccountController implements Serializable {
             }
         } catch (Exception ex) {
             //swallow
+        }
+    }
+    
+    public void SimulateError() throws JSONException {
+        try {
+            URL url = new URL("http://145.93.165.43:9233/MonitoringSysteem/Rest/statusmessages/postmessage");           
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            OutputStream os = conn.getOutputStream();
+            JSONObject obj = new JSONObject();
+            obj.put("systeemnaam", "RekeningrijdersApplicatie");
+            obj.put("message","Down for maintenance");
+            String input = obj.toString();
+            os.write(input.getBytes());
+            os.flush();
+            BufferedReader br = new BufferedReader (new InputStreamReader((conn.getInputStream()))); 
+            String output;
+            System.out.println("Response from server:\n");
+            while ((output = br.readLine()) != null) {
+                System.out.println(output);
+            }
+            conn.disconnect();
+ 
+        } catch (IOException ex) {
+            Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

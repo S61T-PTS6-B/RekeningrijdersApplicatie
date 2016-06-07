@@ -1,5 +1,5 @@
-var wsURINAW = "ws://145.93.105.63:8080/RekeningAdministratieOverheid/NAWSocket";
-var wsURICarTracker = "ws://145.93.105.63:8080/RekeningAdministratieOverheid/CarTrackerSocket";
+var wsURINAW = "ws://145.93.105.25:8080/RekeningAdministratieOverheid/NAWSocket";
+var wsURICarTracker = "ws://145.93.105.25:8080/RekeningAdministratieOverheid/CarTrackerSocket";
 window.addEventListener("load", onLoad, false);
 var websocketnaw = null;
 var websocketcartracker = null;
@@ -20,10 +20,10 @@ function connect() {
         document.getElementById("profileconnectionmessage").innerHTML = "";
     };
     websocketnaw.onclose = function () {
-        console.log("Closed connection NAWSocket");
+        window.alert("Geen verbinding met NAW server van de overheid.");
     };
     websocketcartracker.onclose = function () {
-        console.log("Closed connection CarTrackerSocket");
+        window.alert("Geen verbinding met CarTracker server van de overheid.");
     };
     websocketnaw.onmessage = function (evt) {
         var messagejson = evt.data;

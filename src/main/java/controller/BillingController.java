@@ -161,7 +161,7 @@ public class BillingController implements Serializable {
         String send = "id=" + id  + "&month=" + selectedBill.getMonth() + "&year=" + selectedBill.getYear();
         String encrp = AESEncrypt.encrypt(send);
         try {
-            WebTarget resource = client.target("http://145.93.81.63:8080/VerplaatsingSysteem/Rest/carTrackers/getMonth?code=" + encrp);
+            WebTarget resource = client.target("http://145.93.81.14:8080/VerplaatsingSysteem/Rest/carTrackers/getMonth?code=" + encrp);
             String response = resource.request(MediaType.APPLICATION_JSON).get(String.class);
             JSONObject obj = new JSONObject(AESEncrypt.decrypt(response));
             JSONArray arr = obj.getJSONArray("locations");

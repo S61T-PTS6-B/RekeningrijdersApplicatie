@@ -9,6 +9,7 @@ import dao.IAccountDao;
 import java.util.List;
 import model.Account;
 import model.Invoice;
+import model.Movement;
 
 /**
  *
@@ -56,4 +57,19 @@ public interface IRekeningrijderService
      * Gets called when the user has successfully paid on the PayPal site
      */
     boolean OnSuccessfulPayment();
+    
+    /**
+     * 
+     * @param licensePlate
+     * @param month
+     * @param year
+     * @return the movements belonging to the licensePlate and the given period.
+     */
+    List<Movement> GetMovements(String licensePlate, int month, int year);
+    
+    /**
+     * 
+     * @return true if the database is reachable and responding, false otherwise.
+     */
+    boolean DatabaseIsOnline();
 }

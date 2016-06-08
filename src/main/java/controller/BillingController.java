@@ -7,9 +7,6 @@ package controller;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.ConnectException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,18 +17,9 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
 import model.Invoice;
 import model.Movement;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import service.IRekeningrijderService;
-import utilities.AESEncrypt;
 
 /**
  *
@@ -97,32 +85,35 @@ public class BillingController implements Serializable {
     @PostConstruct
     public void FillBillsList() {      
         Invoice bill = new Invoice();
-        bill.setAmount(34.0);
+        bill.setTotalAmount(34.0);
         bill.setKilometers(257);
         bill.setMonth(1);
         bill.setYear(2016);
         bill.setPaid(true);
+        bill.setLicensePlate("Cas van Gool");
         
         Invoice bill2 = new Invoice();
-        bill2.setAmount(45.0);
+        bill2.setTotalAmount(45.0);
         bill2.setKilometers(311);
         bill2.setMonth(2);
         bill2.setYear(2016);
         bill2.setPaid(false);
+        bill2.setLicensePlate("Cas van Gool");
         
         Invoice bill3 = new Invoice();
-        bill3.setAmount(63.0);
+        bill3.setTotalAmount(63.0);
         bill3.setKilometers(454);
         bill3.setMonth(5);
         bill3.setYear(2016);
         bill3.setPaid(false);
+        bill3.setLicensePlate("Cas van Gool");
         
         bills.add(bill);
         bills.add(bill2);
         bills.add(bill3);
-        billsMap.put(bill.getPeriod(), false);
-        billsMap.put(bill2.getPeriod(), false);
-        billsMap.put(bill3.getPeriod(), false);
+        billsMap.put(bill.getCharacteristic(), false);
+        billsMap.put(bill2.getCharacteristic(), false);
+        billsMap.put(bill3.getCharacteristic(), false);
     } 
     
     
@@ -131,7 +122,7 @@ public class BillingController implements Serializable {
         message = "";
         billsToPay.clear();
         for (Invoice b : bills) {
-            if (!b.getPaid() && billsMap.get(b.getPeriod())) {
+            if (!b.getPaid() && billsMap.get(b.getCharacteristic())) {
                 billsToPay.add(b);
             }
         }
@@ -155,38 +146,11 @@ public class BillingController implements Serializable {
     public String GoToMovements() throws Exception {
         movements.clear();
         message = "";
-        Client client = ClientBuilder.newClient();
-        //String id = selectedBill.getLicensePlate();
-        String id = "Cas van Gool";
-        String send = "id=" + id  + "&month=" + selectedBill.getMonth() + "&year=" + selectedBill.getYear();
-        String encrp = AESEncrypt.encrypt(send);
-        try {
-            WebTarget resource = client.target("http://145.93.81.14:8080/VerplaatsingSysteem/Rest/carTrackers/getMonth?code=" + encrp);
-            String response = resource.request(MediaType.APPLICATION_JSON).get(String.class);
-            JSONObject obj = new JSONObject(AESEncrypt.decrypt(response));
-            JSONArray arr = obj.getJSONArray("locations");
-            for (int i=0; i<arr.length(); i++) {
-                JSONObject beginobj = arr.getJSONObject(i);
-                JSONObject endobj;
-                try {
-                    endobj = arr.getJSONObject(i+1);
-                } catch (JSONException ex) {
-                    endobj = beginobj;
-                }
-                Movement m = new Movement();
-                m.setLatStart(beginobj.getDouble("lat"));
-                m.setLongStart(beginobj.getDouble("long"));
-                m.setLatEnd(endobj.getDouble("lat"));
-                m.setLongEnd(endobj.getDouble("long"));
-                DateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");         
-                m.setDate(format.parse(beginobj.getString("date")));
-                movements.add(m);
-            } 
-        }
-        catch (NotFoundException | ConnectException ex) {
+        movements = service.GetMovements(selectedBill.getLicensePlate(), selectedBill.getMonth(), selectedBill.getYear());
+        if (movements == null || movements.isEmpty()) {
             message = "De verplaatsingen konden niet worden opgehaald. Probeer het later nog eens.";
             return "billinginfo.xhtml";
-        }
+        }       
         return "movements.xhtml";
     }
 }

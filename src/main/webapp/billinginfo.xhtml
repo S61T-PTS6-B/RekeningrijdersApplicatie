@@ -37,15 +37,15 @@
                     <h:dataTable id="billstable" border="1" styleClass="order-table" headerClass="order-table-header" rowClasses="order-table-odd-row,order-table-even-row" value="#{billingController.bills}" var="b">
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="Periode"/>
+                                <h:outputText value="Kenmerk"/>
                             </f:facet>
-                            #{b.period}
+                            Rekeningrijden #{b.getCharacteristic()}
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="Bedrag"/>
                             </f:facet>
-                            €#{b.amount}0
+                            €#{b.totalAmount}0
                         </h:column>
                         <h:column>
                             <f:facet name="header">
@@ -78,7 +78,7 @@
                             </f:facet>
                             <h:panelGroup layout="block" rendered="#{!b.paid}">
                                 <h:form>
-                                    <h:selectBooleanCheckbox value="#{billingController.billsMap[b.period]}">
+                                    <h:selectBooleanCheckbox value="#{billingController.billsMap[b.getCharacteristic()]}">
                                         <f:ajax event="valueChange" render=":wrapper:billstable"/>
                                     </h:selectBooleanCheckbox>
                                 </h:form>

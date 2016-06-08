@@ -14,6 +14,8 @@ import com.paypal.exception.SSLConfigurationException;
 import com.paypal.sdk.exceptions.OAuthException;
 import controller.BillingController;
 import dao.IAccountDao;
+import dao.IMovementsDao;
+import dao.ITestDao;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
 import model.Account;
 import model.Invoice;
+import model.Movement;
 import org.xml.sax.SAXException;
 import urn.ebay.api.PayPalAPI.DoExpressCheckoutPaymentReq;
 import urn.ebay.api.PayPalAPI.DoExpressCheckoutPaymentRequestType;
@@ -60,6 +63,10 @@ public class RekeningrijderService implements IRekeningrijderService {
     
     @EJB
     private IAccountDao accountDao;
+    @EJB
+    private IMovementsDao movementsDao;
+    @EJB
+    private ITestDao testDao;
     
     @Override
     public void setDao(IAccountDao dao) {
@@ -132,12 +139,12 @@ public class RekeningrijderService implements IRekeningrijderService {
             BasicAmountType amt = new BasicAmountType();
             amt.setCurrencyID(CurrencyCodeType.EUR);            
             item.setQuantity(1);
-            String amountstring = String.valueOf(b.getAmount());
+            String amountstring = String.valueOf(b.getTotalAmount());
             amt.setValue(amountstring);  
-            item.setName("Rekeningrijden " + b.getPeriod());
+            item.setName("Rekeningrijden " + b.getCharacteristic());
             item.setAmount(amt);
             lineItems.add(item);
-            totalAmount += b.getAmount();
+            totalAmount += b.getTotalAmount();
         }
         paymentDetails.setPaymentDetailsItem(lineItems);
         BasicAmountType orderTotal = new BasicAmountType();
@@ -217,5 +224,19 @@ public class RekeningrijderService implements IRekeningrijderService {
             Logger.getLogger(BillingController.class.getName()).log(Level.SEVERE, null, ex);
         } 
         return false;
+    }
+
+    @Override
+    public List<Movement> GetMovements(String licensePlate, int month, int year) {
+        try {
+            return movementsDao.GetMovements(licensePlate, month, year);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean DatabaseIsOnline() {
+        return testDao.DatabaseOnline();
     }
 }

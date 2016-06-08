@@ -6,9 +6,11 @@
 package model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -24,7 +26,17 @@ public class Account implements Serializable {
     private String password;
     private boolean confirmed;
     private String confirmationId;
+    @OneToMany(mappedBy="owner")
+    private List<Invoice> invoices;
 
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
+    }
+    
     public String getEmail() {
         return email;
     }

@@ -5,17 +5,60 @@
  */
 package model;
 
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 /**
  *
  * @author Gijs
  */
-public class Invoice {
+@Entity
+public class Invoice implements Serializable {
+    @Id
+    private Long id;
     private boolean paid;
     private int kilometers;   
     private int month;
     private int year;
-    private double amount;  
+    private String urlToDownload;
+    private double totalAmount;  
     private String licensePlate;
+    @ManyToOne
+    private Account owner;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUrlToDownload() {
+        return urlToDownload;
+    }
+
+    public void setUrlToDownload(String urlToDownload) {
+        this.urlToDownload = urlToDownload;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public Account getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Account owner) {
+        this.owner = owner;
+    }
 
     public String getLicensePlate() {
         return licensePlate;
@@ -57,15 +100,7 @@ public class Invoice {
         this.kilometers = kilometers;
     }
 
-    public String getPeriod() {
-        return this.month + " - " + this.year;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public String getCharacteristic() {
+        return this.licensePlate + " (" + this.month + "-" + this.year + ")";
     }
 }

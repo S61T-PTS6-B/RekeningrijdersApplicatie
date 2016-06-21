@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import model.Invoice;
 import model.Movement;
@@ -29,9 +30,12 @@ import service.IRekeningrijderService;
 @ManagedBean
 @SessionScoped
 public class BillingController implements Serializable {
-      
+    
     @EJB
-    private IRekeningrijderService service;  
+    private IRekeningrijderService service; 
+    
+    @Inject
+    private AccountController accountController;
     
     private String message;
     private Invoice selectedBill;
@@ -39,7 +43,7 @@ public class BillingController implements Serializable {
     private final List<Invoice> billsToPay = new ArrayList<>();
     private Map<String, Boolean> billsMap = new HashMap<>();
     private List<Movement> movements = new ArrayList<>();
-
+ 
     public List<Movement> getMovements() {
         return movements;
     }
@@ -83,37 +87,15 @@ public class BillingController implements Serializable {
     public BillingController() {} 
 
     @PostConstruct
-    public void FillBillsList() {      
-        Invoice bill = new Invoice();
-        bill.setTotalAmount(34.0);
-        bill.setKilometers(257);
-        bill.setMonth(1);
-        bill.setYear(2016);
-        bill.setPaid(true);
-        bill.setLicensePlate("Cas van Gool");
-        
-        Invoice bill2 = new Invoice();
-        bill2.setTotalAmount(45.0);
-        bill2.setKilometers(311);
-        bill2.setMonth(2);
-        bill2.setYear(2016);
-        bill2.setPaid(false);
-        bill2.setLicensePlate("Cas van Gool");
-        
-        Invoice bill3 = new Invoice();
-        bill3.setTotalAmount(63.0);
-        bill3.setKilometers(454);
-        bill3.setMonth(5);
-        bill3.setYear(2016);
-        bill3.setPaid(false);
-        bill3.setLicensePlate("Cas van Gool");
-        
-        bills.add(bill);
-        bills.add(bill2);
-        bills.add(bill3);
-        billsMap.put(bill.getCharacteristic(), false);
-        billsMap.put(bill2.getCharacteristic(), false);
-        billsMap.put(bill3.getCharacteristic(), false);
+    public void FillBillsList() {
+        bills.clear();
+        billsToPay.clear();
+        String bsn = accountController.getBsn();
+        List<Invoice> invoices = service.GetInvoicesFromUser(Integer.parseInt(bsn));
+        for (Invoice i : invoices) {
+            bills.add(i);           
+            billsMap.put(i.getCharacteristic(), i.getPaid());
+        }      
     } 
     
     
@@ -134,8 +116,9 @@ public class BillingController implements Serializable {
     }
     
     public void OnSuccessfulPayment() throws IOException {
-        if (service.OnSuccessfulPayment()) {
-            message = "";
+        if (service.OnSuccessfulPayment(billsToPay)) {
+            message = ""; 
+            FillBillsList();
             FacesContext.getCurrentInstance().getExternalContext().redirect("finishedpayment.xhtml");
         } else {
             message = "Uw betaling is mislukt.";

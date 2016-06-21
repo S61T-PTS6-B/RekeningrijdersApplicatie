@@ -55,8 +55,10 @@ public interface IRekeningrijderService
     
     /**
      * Gets called when the user has successfully paid on the PayPal site
+     * @param invoices
+     * @return true when payment successful, false otherwise.
      */
-    boolean OnSuccessfulPayment();
+    boolean OnSuccessfulPayment(List<Invoice> invoices);
     
     /**
      * 
@@ -72,4 +74,30 @@ public interface IRekeningrijderService
      * @return true if the database is reachable and responding, false otherwise.
      */
     boolean DatabaseIsOnline();
+    
+    /**
+     * Sets the invoice with given id to paid, in own database as well as government database (via JMS)
+     * @param invoiceId 
+     */
+    void SetInvoicePaid(Long invoiceId);
+    
+    /**
+     * Saves an invoice to the local database
+     * @param i 
+     */
+    void SaveInvoice(Invoice i);
+    
+    /**
+     * Gets the invoices belonging to a user
+     * @param bsn
+     * @return 
+     */
+    List<Invoice> GetInvoicesFromUser(int bsn);
+    
+    /**
+     * Gets the account with specified bsn.
+     * @param bsn
+     * @return 
+     */
+    Account GetAccount(int bsn);
 }

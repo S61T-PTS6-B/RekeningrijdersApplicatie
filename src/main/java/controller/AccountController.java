@@ -19,9 +19,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
+import javax.inject.Inject;
 import model.Account;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +41,9 @@ public class AccountController implements Serializable {
     private String password;
     private String message;
 
-    public AccountController() {}
+    public AccountController() {
+        
+    }
     
     public String getBsn() {
         return bsn;

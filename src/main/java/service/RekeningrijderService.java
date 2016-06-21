@@ -14,10 +14,12 @@ import com.paypal.exception.SSLConfigurationException;
 import com.paypal.sdk.exceptions.OAuthException;
 import controller.BillingController;
 import dao.IAccountDao;
+import dao.IInvoiceDao;
 import dao.IMovementsDao;
 import dao.ITestDao;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +29,10 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.jms.JMSException;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.ParserConfigurationException;
+import messaging.InvoiceUpdater;
 import model.Account;
 import model.Invoice;
 import model.Movement;
@@ -67,6 +71,8 @@ public class RekeningrijderService implements IRekeningrijderService {
     private IMovementsDao movementsDao;
     @EJB
     private ITestDao testDao;
+    @EJB
+    private IInvoiceDao invoiceDao;
     
     @Override
     public void setDao(IAccountDao dao) {
@@ -183,7 +189,7 @@ public class RekeningrijderService implements IRekeningrijderService {
     }
 
     @Override
-    public boolean OnSuccessfulPayment() {
+    public boolean OnSuccessfulPayment(List<Invoice> invoices) {
         HttpServletRequest request=(HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String token=request.getParameter("token");
         String payerId=request.getParameter("PayerID");
@@ -216,13 +222,18 @@ public class RekeningrijderService implements IRekeningrijderService {
             DoExpressCheckoutPaymentResponseType finalresponse = paypalservice.doExpressCheckoutPayment(doExpressCheckoutPaymentReq); 
             
             if (finalresponse.getAck().equals(AckCodeType.SUCCESS)) {              
-                //Send paid message to OverheidsApplicatie
+                for (Invoice i : invoices) {
+                    SetInvoicePaid(i.getId());
+                    InvoiceUpdater.sendPackage(i.getId(), "paid");
+                }
                 return true;
             } 
             
         } catch (SSLConfigurationException | InvalidCredentialException | IOException | HttpErrorException | InvalidResponseDataException | ClientActionRequiredException | MissingCredentialException | InterruptedException | OAuthException | ParserConfigurationException | SAXException ex) {
             Logger.getLogger(BillingController.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        } catch (JMSException ex) { 
+            Logger.getLogger(RekeningrijderService.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return false;
     }
 
@@ -238,5 +249,30 @@ public class RekeningrijderService implements IRekeningrijderService {
     @Override
     public boolean DatabaseIsOnline() {
         return testDao.DatabaseOnline();
+    }
+
+    @Override
+    public void SetInvoicePaid(Long invoiceId) {
+        try {
+            invoiceDao.SetInvoicePaid(invoiceId);
+            InvoiceUpdater.sendPackage(invoiceId, "paid");          
+        } catch (JMSException ex) {
+            System.out.println("JMS ERROR! " + Arrays.toString(ex.getStackTrace()));
+        }
+    }
+
+    @Override
+    public void SaveInvoice(Invoice i) {
+        invoiceDao.SaveInvoice(i);
+    }
+
+    @Override
+    public List<Invoice> GetInvoicesFromUser(int bsn) {
+        return invoiceDao.GetInvoicesFromUser(bsn);
+    }
+
+    @Override
+    public Account GetAccount(int bsn) {
+        return accountDao.FindAccount(bsn);
     }
 }

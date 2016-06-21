@@ -19,7 +19,7 @@ public class Invoice implements Serializable {
     @Id
     private Long id;
     private boolean paid;
-    private int kilometers;   
+    private double kilometers;   
     private int month;
     private int year;
     private String urlToDownload;
@@ -92,11 +92,11 @@ public class Invoice implements Serializable {
         this.paid = paid;
     }
 
-    public int getKilometers() {
+    public double getKilometers() {
         return kilometers;
     }
 
-    public void setKilometers(int kilometers) {
+    public void setKilometers(double kilometers) {
         this.kilometers = kilometers;
     }
 

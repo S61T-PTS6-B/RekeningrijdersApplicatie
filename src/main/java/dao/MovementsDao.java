@@ -31,12 +31,10 @@ public class MovementsDao implements IMovementsDao {
     public List<Movement> GetMovements(String licensePlate, int month, int year) throws Exception {
         List<Movement> movements = new ArrayList<>();
         Client client = ClientBuilder.newClient();
-        //String id = selectedBill.getLicensePlate();
-        String id = "Cas van Gool";
-        String send = "id=" + id  + "&month=" + month + "&year=" + year;
+        String send = "id=" + licensePlate  + "&month=" + month + "&year=" + year;
         String encrp = AESEncrypt.encrypt(send);
         try {
-            WebTarget resource = client.target("http://145.93.81.14:8080/VerplaatsingSysteem/Rest/carTrackers/getMonth?code=" + encrp);
+            WebTarget resource = client.target("http://145.93.81.86:8080/VerplaatsingSysteem/Rest/carTrackers/getMonth?code=" + encrp);
             String response = resource.request(MediaType.APPLICATION_JSON).get(String.class);
             JSONObject obj = new JSONObject(AESEncrypt.decrypt(response));
             JSONArray arr = obj.getJSONArray("locations");
@@ -53,7 +51,7 @@ public class MovementsDao implements IMovementsDao {
                 m.setLongStart(beginobj.getDouble("long"));
                 m.setLatEnd(endobj.getDouble("lat"));
                 m.setLongEnd(endobj.getDouble("long"));
-                DateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");         
+                DateFormat format = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy");         
                 m.setDate(format.parse(beginobj.getString("date")));
                 movements.add(m);
             } 

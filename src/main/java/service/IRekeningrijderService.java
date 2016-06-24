@@ -100,4 +100,11 @@ public interface IRekeningrijderService
      * @return 
      */
     Account GetAccount(int bsn);
+    
+    /**
+     * 
+     * @param roadname
+     * @param bsn 
+     */
+    void SaveSubscription(String roadname, int bsn);
 }

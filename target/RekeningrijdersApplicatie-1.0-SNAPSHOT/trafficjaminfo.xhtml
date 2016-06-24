@@ -30,7 +30,12 @@
                     </li>
                 </ul>
             </div>
-            <div id="maincontent">File informatie</div>
+            <div id="maincontent">Ik wil een mail krijgen wanneer er op de volgende weg een file staat:</div>
+            <br></br>
+            <h:form>
+                <h:inputText id="tbRoadName" value="#{roadSubscriptionController.roadName}"/>
+                <h:commandButton value="Abonneer" action="#{roadSubscriptionController.subscribeToRoad()}"/>
+            </h:form>
         </div>
     </h:body>
 </html>

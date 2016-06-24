@@ -99,6 +99,11 @@ public class RekeningrijderService implements IRekeningrijderService {
             acc.setBsn(bsn);
             acc.setEmail(email);
             acc.setConfirmed(false);
+            try {
+                acc.setPassword(PasswordStorage.createHash(password));
+                } catch (PasswordStorage.CannotPerformOperationException ex) {
+                    
+                }
             String uuid = java.util.UUID.randomUUID().toString();
             acc.setConfirmationId(uuid);
             HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -110,12 +115,7 @@ public class RekeningrijderService implements IRekeningrijderService {
             }
             String link = fulllink + "/activateaccount?bsn=" + bsn + "&uuid=" + uuid; 
             if (accountDao.RegisterUser(acc)) {
-                Mailing.SendEmail(email, "<p>Dank u voor het registreren voor De Rekeningrijder Online. Klik op onderstaande link om uw account te activeren: <br></br><br></br> <a>" + link + "</a></p>", "Activatie Rekeningrijder Online");
-                try {
-                acc.setPassword(PasswordStorage.createHash(password));
-                } catch (PasswordStorage.CannotPerformOperationException ex) {
-                    return false;
-                }
+                Mailing.SendEmail(email, "<p>Dank u voor het registreren voor De Rekeningrijder Online. Klik op onderstaande link om uw account te activeren: <br></br><br></br> <a>" + link + "</a></p>", "Activatie Rekeningrijder Online");               
                 return true;
             }
             return false;
@@ -274,5 +274,10 @@ public class RekeningrijderService implements IRekeningrijderService {
     @Override
     public Account GetAccount(int bsn) {
         return accountDao.FindAccount(bsn);
+    }
+
+    @Override
+    public void SaveSubscription(String roadname, int bsn) {
+        
     }
 }

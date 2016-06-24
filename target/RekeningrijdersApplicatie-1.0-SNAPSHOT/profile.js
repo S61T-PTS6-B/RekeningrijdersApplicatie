@@ -1,5 +1,5 @@
-var wsURINAW = "ws://145.93.105.25:8080/RekeningAdministratieOverheid/NAWSocket";
-var wsURICarTracker = "ws://145.93.105.25:8080/RekeningAdministratieOverheid/CarTrackerSocket";
+var wsURINAW = "ws://145.93.104.198:8080/RekeningAdministratieOverheid/NAWSocket";
+var wsURICarTracker = "ws://145.93.104.198:8080/RekeningAdministratieOverheid/CarTrackerSocket";
 window.addEventListener("load", onLoad, false);
 var websocketnaw = null;
 var websocketcartracker = null;
@@ -86,6 +86,12 @@ function FillCarTrackerFields(message) {
         var cartracker = message[i];
         var li = document.createElement("li");
         li.innerHTML = cartracker.brandCar + " " + cartracker.modelCar + " (" + cartracker.licensePlate + ")";
+        var sellcar = document.createElement("input");
+        sellcar.type = "button";
+        sellcar.value = "Verkoop deze auto";
+        sellcar.className = "buttons";
+        sellcar.onclick = OnSellCarClick();
+        li.appendChild(sellcar);
         document.getElementById("carslist").appendChild(li);
     }
 }
@@ -110,6 +116,10 @@ function OnChangeEmailClick() {
         var message = JSON.stringify({'bsn' : bsn , 'newphone' : "" , 'newmail' : newmail});
         sendMessage(message, websocketnaw);
     }
+}
+
+function OnSellCarClick() {
+    
 }
 
 function validateEmail(email) {

@@ -78,6 +78,7 @@ public class RegisterController implements Serializable {
             return "register.xhtml";
         }
         int bsnint = Integer.parseInt(bsn);
+        email = "gijshendrickx@hotmail.com";
         if (service.Register(bsnint, password1, email)) {
             return "successfulregistration.xhtml";
         } 

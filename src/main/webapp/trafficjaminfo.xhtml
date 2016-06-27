@@ -29,18 +29,15 @@
                     <li>
                         <h:link value="File informatie" outcome="trafficjaminfo.xhtml"/>
                     </li>
-                    <li>
-                        <h:link value="Transfer" outcome="transfer.xhtml"/>
-                    </li>
                 </ul>
             </div>
-            <div id="maincontent">Ik wil een mail krijgen wanneer er op de volgende weg een file staat:</div>
+            <div id="maincontent">Ik wil een mail krijgen wanneer er op de volgende weg een file staat:
+            <br></br>
             <br></br>
             <h:form>
                 <h:inputText id="tbRoadName" value="#{roadSubscriptionController.roadName}"/>
-                <h:commandButton value="Abonneer" actionListener="#{roadSubscriptionController.SubscribeToRoad}"/>
-            </h:form>
-            
+                <h:commandButton class="buttons" value="Abonneer" actionListener="#{roadSubscriptionController.SubscribeToRoad}"/>
+            </h:form>           
             <ui:repeat value="#{roadSubscriptionController.subscribedRoads}" var="roads">
                     <li>
                         <h:form>
@@ -48,6 +45,9 @@
                         </h:form>
                     </li>
             </ui:repeat>
+            <br></br>
+            <h:outputLabel value="#{roadSubscriptionController.message}" style="color:red"/>
+            </div>            
         </div>
     </h:body>
 </html>

@@ -1,6 +1,6 @@
-var wsURINAW = "ws://192.168.32.102:8080/RekeningAdministratieOverheid/NAWSocket";
-var wsURICarTracker = "ws://192.168.32.102:8080/RekeningAdministratieOverheid/CarTrackerSocket";
-var wsURITransfer = "ws://192.168.32.102:8080/RekeningAdministratieOverheid/TransferSocket";
+var wsURINAW = "ws://145.93.104.202:8080/RekeningAdministratieOverheid/NAWSocket";
+var wsURICarTracker = "ws://145.93.104.202:8080/RekeningAdministratieOverheid/CarTrackerSocket";
+var wsURITransfer = "ws://145.93.104.202:8080/RekeningAdministratieOverheid/TransferSocket";
 window.addEventListener("load", onLoad, false);
 var websocketnaw = null;
 var websocketcartracker = null;
@@ -73,8 +73,9 @@ function connect() {
             sellcar.type = "button";
             sellcar.value = "Verkoop deze auto";
             sellcar.className = "buttons";
+            sellcar.style.marginLeft = "5px";
             sellcar.onclick = function () {
-                OnSellCarClick(inhoud, confirmmessage.id)
+                OnSellCarClick(inhoud, confirmmessage.id);
             };
             li.appendChild(sellcar);
             document.getElementById("carslist").appendChild(li);
@@ -172,13 +173,13 @@ function OnChangeEmailClick() {
 }
 
 function OnSellCarClick(inhoud, id) {
-    var person = prompt("Are you sure you want to sell:" + inhoud + "\n Fill in beneath what the bsn number\n of the person that is going to get the car", "BSN");
-    if (person != null) {
+    var person = prompt("Weet je zeker dat je jouw ", + inhoud + " wilt overzetten naar een andere eigenaar? \n Vul hieronder het BSN in van de volgende eigenaar.", "BSN");
+    if (person !== null) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             console.log(xhttp.status);
             if (xhttp.readyState === 4 && xhttp.status === 200) {
-                prompt("Copy this code and give it \nto the person in question:\n", xhttp.responseText);
+                prompt("Kopieer de volgende code en geef het \n aan de volgende eigenaar:\n", xhttp.responseText);
                 var message = JSON.stringify({'bsn': person, 'code': xhttp.responseText, 'carid': id, 'type': 'register'});
                 console.log(message);
                 sendMessage(message, websockettransfer);
@@ -191,8 +192,8 @@ function OnSellCarClick(inhoud, id) {
 }
 
 function transferCar() {
-    var code = prompt("Fill in the code of the transfer:", "Code");
-    if (code != null) {
+    var code = prompt("Vul hier de ontvangen code in om de auto naar uzelf over te zetten:", "Code");
+    if (code !== null) {
         var bsn = document.getElementById("bsncontainer").innerHTML;
         var message = JSON.stringify({'bsn': bsn, 'code': code, 'carid': '', 'type': 'transfer'});
         confirmcode = code;

@@ -14,7 +14,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import model.RoadSubscription;
-import org.json.JSONArray;
 import service.IRekeningrijderService;
 
 /**

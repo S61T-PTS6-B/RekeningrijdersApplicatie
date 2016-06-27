@@ -10,6 +10,8 @@ import java.util.List;
 import model.Account;
 import model.Invoice;
 import model.Movement;
+import model.RoadSubscription;
+import org.json.JSONArray;
 
 /**
  *
@@ -107,4 +109,10 @@ public interface IRekeningrijderService
      * @param bsn 
      */
     void SaveSubscription(String roadname, int bsn);
+    
+    public boolean RemoveSubscription(String roadname, int bsn);
+    
+    public void SendMessageToSubscribers(String roadname, String kind);
+    
+    public List<RoadSubscription> getSubscribedRoads(int bsn);
 }

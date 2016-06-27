@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.util.List;
 import model.RoadSubscription;
 
 /**
@@ -13,4 +14,6 @@ import model.RoadSubscription;
  */
 public interface ISubscriptionDao {
     void SaveSubscription(RoadSubscription s, int bsn);
+    public boolean RemoveSubscription(RoadSubscription s, int bsn);
+    public List<RoadSubscription> getSubscriptions();
 }

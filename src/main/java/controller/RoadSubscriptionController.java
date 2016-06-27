@@ -6,11 +6,15 @@
 package controller;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
+import model.RoadSubscription;
+import org.json.JSONArray;
 import service.IRekeningrijderService;
 
 /**
@@ -28,6 +32,7 @@ public class RoadSubscriptionController implements Serializable {
     private AccountController accountController;
     @EJB
     private IRekeningrijderService service;
+    
     
     public RoadSubscriptionController() {}
 
@@ -47,7 +52,7 @@ public class RoadSubscriptionController implements Serializable {
         this.roadName = roadName;
     }
     
-    public void SubscribeToRoad() {
+    public void SubscribeToRoad(ActionEvent event) {
         if (roadName.isEmpty()) {
             message = "Vul een weg in.";
             return;
@@ -56,5 +61,9 @@ public class RoadSubscriptionController implements Serializable {
         service.SaveSubscription(roadName, bsn);
         message = "Wijzigingen opgeslagen. U krijgt een mail wanneer er een file staat op de " + roadName;
         roadName = "";
+    }
+    
+    public List<RoadSubscription> getSubscribedRoads(){
+        return service.getSubscribedRoads(Integer.parseInt(accountController.getBsn()));
     }
 }

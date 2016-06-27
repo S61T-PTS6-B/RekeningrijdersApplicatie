@@ -16,6 +16,7 @@ import controller.BillingController;
 import dao.IAccountDao;
 import dao.IInvoiceDao;
 import dao.IMovementsDao;
+import dao.ISubscriptionDao;
 import dao.ITestDao;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,6 +37,8 @@ import messaging.InvoiceUpdater;
 import model.Account;
 import model.Invoice;
 import model.Movement;
+import model.RoadSubscription;
+import org.json.JSONArray;
 import org.xml.sax.SAXException;
 import urn.ebay.api.PayPalAPI.DoExpressCheckoutPaymentReq;
 import urn.ebay.api.PayPalAPI.DoExpressCheckoutPaymentRequestType;
@@ -73,6 +76,9 @@ public class RekeningrijderService implements IRekeningrijderService {
     private ITestDao testDao;
     @EJB
     private IInvoiceDao invoiceDao;
+    
+    @EJB
+    private ISubscriptionDao subscriptionDao;
     
     @Override
     public void setDao(IAccountDao dao) {
@@ -278,6 +284,40 @@ public class RekeningrijderService implements IRekeningrijderService {
 
     @Override
     public void SaveSubscription(String roadname, int bsn) {
+        RoadSubscription r = new RoadSubscription();
+        r.setRoadname(roadname);
+        subscriptionDao.SaveSubscription(r, bsn);
+    }
+    
+    @Override
+    public boolean RemoveSubscription(String roadname, int bsn){
+           RoadSubscription r = new RoadSubscription();
+        r.setRoadname(roadname);
+        return subscriptionDao.RemoveSubscription(r, bsn);
         
+    }
+    
+    @Override
+    public void SendMessageToSubscribers(String roadname, String kind){
+        for(RoadSubscription r : subscriptionDao.getSubscriptions()){
+            if(roadname.equals(r.getRoadname())){
+                if(kind.equals("Remove")){
+                    Mailing.SendEmail(r.getAccount().getEmail(), "<p>Beste heer/mevrouw,</p><p> De file op de straat : " + roadname + " is opgelost</p><p>Met vriendelijke groet,</p><p>de overheid</p>","File");    
+                }else{
+                Mailing.SendEmail(r.getAccount().getEmail(), "<p>Beste heer/mevrouw,</p><p> Er is een file gemeld op de straat : " + roadname + "</p><p>Met vriendelijke groet,</p><p>de overheid</p>","File");    
+                }
+            }
+        }
+    }
+    
+    @Override
+    public List<RoadSubscription> getSubscribedRoads(int bsn){
+        List<RoadSubscription> roads = new ArrayList<>();
+        for(RoadSubscription r : subscriptionDao.getSubscriptions()){
+            if(bsn == r.getAccount().getBsn()){
+                roads.add(r);
+            }
+        }
+        return roads;
     }
 }

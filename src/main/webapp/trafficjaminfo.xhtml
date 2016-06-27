@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     #{accountController.CheckForActiveSession()}
     <h:head>
         <title>De Rekeningrijder - File informatie</title>
@@ -28,14 +29,25 @@
                     <li>
                         <h:link value="File informatie" outcome="trafficjaminfo.xhtml"/>
                     </li>
+                    <li>
+                        <h:link value="Transfer" outcome="transfer.xhtml"/>
+                    </li>
                 </ul>
             </div>
             <div id="maincontent">Ik wil een mail krijgen wanneer er op de volgende weg een file staat:</div>
             <br></br>
             <h:form>
                 <h:inputText id="tbRoadName" value="#{roadSubscriptionController.roadName}"/>
-                <h:commandButton value="Abonneer" action="#{roadSubscriptionController.subscribeToRoad()}"/>
+                <h:commandButton value="Abonneer" actionListener="#{roadSubscriptionController.SubscribeToRoad}"/>
             </h:form>
+            
+            <ui:repeat value="#{roadSubscriptionController.subscribedRoads}" var="roads">
+                    <li>
+                        <h:form>
+                            <h:outputLabel value="#{roads.roadname}"/>
+                        </h:form>
+                    </li>
+            </ui:repeat>
         </div>
     </h:body>
 </html>

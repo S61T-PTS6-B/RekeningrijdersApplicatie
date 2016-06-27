@@ -1,26 +1,44 @@
-var wsURINAW = "ws://145.93.104.198:8080/RekeningAdministratieOverheid/NAWSocket";
-var wsURICarTracker = "ws://145.93.104.198:8080/RekeningAdministratieOverheid/CarTrackerSocket";
+var wsURINAW = "ws://192.168.32.102:8080/RekeningAdministratieOverheid/NAWSocket";
+var wsURICarTracker = "ws://192.168.32.102:8080/RekeningAdministratieOverheid/CarTrackerSocket";
+var wsURITransfer = "ws://192.168.32.102:8080/RekeningAdministratieOverheid/TransferSocket";
 window.addEventListener("load", onLoad, false);
 var websocketnaw = null;
 var websocketcartracker = null;
+var websockettransfer = null;
+var messagecar;
+var confirmmessage;
+var confirmcode;
 
 function connect() {
     websocketnaw = new WebSocket(wsURINAW);
     websocketcartracker = new WebSocket(wsURICarTracker);
+    websockettransfer = new WebSocket(wsURITransfer);
     websocketcartracker.onerror = function (evt) {
         document.getElementById("profileconnectionmessage").innerHTML = "Kan geen verbinding maken met het administratiesysteem van de overheid. Sommige gegevens kunnen niet worden weergegeven.";
     };
     websocketnaw.onerror = function (evt) {
         document.getElementById("profileconnectionmessage").innerHTML = "Kan geen verbinding maken met het administratiesysteem van de overheid. Sommige gegevens kunnen niet worden weergegeven.";
     };
+    websockettransfer.onerror = function (evt) {
+        document.getElementById("profileconnectionmessage").innerHTML = "Kan geen verbinding maken met het administratiesysteem van de overheid. Sommige gegevens kunnen niet worden weergegeven.";
+    };
     websocketcartracker.onopen = function () {
+        console.log("cartracker")
+        document.getElementById("profileconnectionmessage").innerHTML = "";
+    };
+    websockettransfer.onopen = function () {
+        console.log("transfer")
         document.getElementById("profileconnectionmessage").innerHTML = "";
     };
     websocketnaw.onopen = function () {
+        console.log("naw")
         document.getElementById("profileconnectionmessage").innerHTML = "";
     };
     websocketnaw.onclose = function () {
         window.alert("Geen verbinding met NAW server van de overheid.");
+    };
+    websockettransfer.onclose = function () {
+        window.alert("Geen verbinding met Transfer server van de overheid.");
     };
     websocketcartracker.onclose = function () {
         window.alert("Geen verbinding met CarTracker server van de overheid.");
@@ -30,6 +48,37 @@ function connect() {
         var message = JSON.parse(messagejson);
         console.log("Received from NAWSocket: " + messagejson);
         FillProfileFields(message);
+    };
+    websockettransfer.onmessage = function (evt) {
+        var messagejson = evt.data;
+        messagecar = JSON.parse(messagejson);
+        console.log(messagecar);
+        if (messagecar.brandCar != "") {
+            if (window.confirm("is this the car you want to transfer: " + messagecar.brandCar + " " + messagecar.modelCar + " (" + messagecar.licensePlate + ")") === true) {
+                var bsn = document.getElementById("bsncontainer").innerHTML;
+                console.log(messagecar.carid);
+                var newmessage = JSON.stringify({'bsn': bsn, 'code': confirmcode, 'carid': messagecar.carid, 'type': 'confirm'});
+                confirmmessage =messagecar;
+                confirmcode = null;
+                messagecar = null;
+                sendMessage(newmessage, websockettransfer);
+            } else {
+
+            }
+        } else {
+            var li = document.createElement("li");
+            var inhoud = confirmmessage.brandCar + " " + confirmmessage.modelCar + " (" + confirmmessage.licensePlate + ")";
+            li.innerHTML = inhoud;
+            var sellcar = document.createElement("input");
+            sellcar.type = "button";
+            sellcar.value = "Verkoop deze auto";
+            sellcar.className = "buttons";
+            sellcar.onclick = function () {
+                OnSellCarClick(inhoud, confirmmessage.id)
+            };
+            li.appendChild(sellcar);
+            document.getElementById("carslist").appendChild(li);
+        }
     };
     websocketcartracker.onmessage = function (evt) {
         var messagejson = evt.data;
@@ -42,9 +91,10 @@ function connect() {
 function onLoad() {
     connect();
     var bsn = document.getElementById("bsncontainer").innerHTML;
-    var message = JSON.stringify({'bsn' : bsn , 'newphone' : '' , 'newmail' : ''});
+    var message = JSON.stringify({'bsn': bsn, 'newphone': '', 'newmail': '', register: 'false'});
     sendMessage(message, websocketnaw);
     sendMessage(message, websocketcartracker);
+    //sendMessage("hoi",websockettransfer);
 }
 
 function sendMessage(msg, socket) {
@@ -85,12 +135,15 @@ function FillCarTrackerFields(message) {
     for (var i = 0; i < message.length; i++) {
         var cartracker = message[i];
         var li = document.createElement("li");
-        li.innerHTML = cartracker.brandCar + " " + cartracker.modelCar + " (" + cartracker.licensePlate + ")";
+        var inhoud = cartracker.brandCar + " " + cartracker.modelCar + " (" + cartracker.licensePlate + ")";
+        li.innerHTML = inhoud;
         var sellcar = document.createElement("input");
         sellcar.type = "button";
         sellcar.value = "Verkoop deze auto";
         sellcar.className = "buttons";
-        sellcar.onclick = OnSellCarClick();
+        sellcar.onclick = function () {
+            OnSellCarClick(inhoud, cartracker.id)
+        };
         li.appendChild(sellcar);
         document.getElementById("carslist").appendChild(li);
     }
@@ -102,7 +155,7 @@ function OnChangePhoneClick() {
         window.alert("Het door u ingevulde nummer is geen geldig telefoonnummer.");
     } else {
         var bsn = document.getElementById("bsncontainer").innerHTML;
-        var message = JSON.stringify({'bsn' : bsn , 'newphone' : newphone , 'newmail' : ""});
+        var message = JSON.stringify({'bsn': bsn, 'newphone': newphone, 'newmail': ""});
         sendMessage(message, websocketnaw);
     }
 }
@@ -113,14 +166,40 @@ function OnChangeEmailClick() {
         window.alert("Het door u ingevulde adres is geen geldig e-mailadres.");
     } else {
         var bsn = document.getElementById("bsncontainer").innerHTML;
-        var message = JSON.stringify({'bsn' : bsn , 'newphone' : "" , 'newmail' : newmail});
+        var message = JSON.stringify({'bsn': bsn, 'newphone': "", 'newmail': newmail});
         sendMessage(message, websocketnaw);
     }
 }
 
-function OnSellCarClick() {
-    
+function OnSellCarClick(inhoud, id) {
+    var person = prompt("Are you sure you want to sell:" + inhoud + "\n Fill in beneath what the bsn number\n of the person that is going to get the car", "BSN");
+    if (person != null) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            console.log(xhttp.status);
+            if (xhttp.readyState === 4 && xhttp.status === 200) {
+                prompt("Copy this code and give it \nto the person in question:\n", xhttp.responseText);
+                var message = JSON.stringify({'bsn': person, 'code': xhttp.responseText, 'carid': id, 'type': 'register'});
+                console.log(message);
+                sendMessage(message, websockettransfer);
+            }
+        };
+        xhttp.open("GET", "http://localhost:8080/RekeningrijdersApplicatie/rest/encrypt/" + inhoud, true);
+        xhttp.send();
+    } else {
+    }
 }
+
+function transferCar() {
+    var code = prompt("Fill in the code of the transfer:", "Code");
+    if (code != null) {
+        var bsn = document.getElementById("bsncontainer").innerHTML;
+        var message = JSON.stringify({'bsn': bsn, 'code': code, 'carid': '', 'type': 'transfer'});
+        confirmcode = code;
+        sendMessage(message, websockettransfer);
+    }
+}
+
 
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

@@ -15,6 +15,8 @@ import javax.mail.internet.*;
 public class Mailing {
     
     public static void SendEmail(String dest, String text, String subject) {
+        
+        System.out.println(dest + text + subject);
         Properties props = System.getProperties();
         props.setProperty("mail.smtp.host", "localhost");
         props.setProperty("mail.smtp.port", "25");

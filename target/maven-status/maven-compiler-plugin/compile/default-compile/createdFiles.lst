@@ -1,3 +1,6 @@
+model\RoadSubscription_.class
+rest\EncryptRest.class
+controller\RoadSubscriptionController.class
 utilities\AESEncrypt.class
 utilities\PasswordStorage$CannotPerformOperationException.class
 org\netbeans\rest\application\config\ApplicationConfig.class
@@ -9,6 +12,7 @@ model\Invoice_.class
 controller\RegisterController.class
 utilities\SocketConnection.class
 utilities\PasswordStorage.class
+model\RoadSubscription.class
 model\Account_.class
 messaging\InvoiceSaver.class
 dao\AccountDao.class
@@ -28,4 +32,7 @@ dao\IAccountDao.class
 dao\IInvoiceDao.class
 dao\MovementsDao.class
 utilities\Mailing.class
+dao\SubscriptionDao.class
+dao\ISubscriptionDao.class
 rest\MonitoringEndpointREST.class
+rest\TrafficJamEndpoint.class

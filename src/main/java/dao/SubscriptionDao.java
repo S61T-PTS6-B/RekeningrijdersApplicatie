@@ -5,9 +5,12 @@
  */
 package dao;
 
+import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import model.Account;
 import model.RoadSubscription;
 
@@ -15,6 +18,7 @@ import model.RoadSubscription;
  *
  * @author Gijs
  */
+@Stateless
 public class SubscriptionDao implements ISubscriptionDao {
 
     @EJB
@@ -27,6 +31,26 @@ public class SubscriptionDao implements ISubscriptionDao {
         Account a = accountDao.FindAccount(bsn);
         s.setAccount(a);
         em.persist(s);
+    }
+    
+    @Override
+    public boolean RemoveSubscription(RoadSubscription s, int bsn){
+        try{
+            Account a = accountDao.FindAccount(bsn);
+            s.setAccount(a);
+            em.remove(s);
+        }catch(Exception e){
+            return false;
+        }
+        return true;
+        
+    }
+    
+    @Override
+    public List<RoadSubscription> getSubscriptions(){
+                Query query = em.createQuery(
+                "SELECT r from RoadSubscription r");
+        return (List<RoadSubscription>) query.getResultList();
     }
     
 }

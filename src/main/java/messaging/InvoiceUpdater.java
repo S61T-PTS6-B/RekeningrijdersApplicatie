@@ -18,7 +18,7 @@ public class InvoiceUpdater {
     
     public static boolean sendPackage(Long invoiceId, String type) throws JMSException {
         ConnectionFactory connFactory = new ConnectionFactory();
-        connFactory.setProperty(ConnectionConfiguration.imqAddressList, "145.93.105.201:7676");
+        connFactory.setProperty(ConnectionConfiguration.imqAddressList, "192.168.32.102:7676");
         Queue myQueue = new Queue("PaidQueue");
         try (Connection connection = connFactory.createConnection(); 
                 Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE); 

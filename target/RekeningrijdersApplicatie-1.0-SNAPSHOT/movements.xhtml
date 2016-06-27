@@ -16,9 +16,7 @@
             <h1>Verplaatsingen</h1>
             <br/>
             <br/>
-            <ui:repeat value="#{billingController.movements}" var="m">
-                <a onclick="drawLine(#{m.latStart},#{m.longStart},#{m.latEnd},#{m.longEnd})">#{m.date.toLocaleString()}</a><br/>
-            </ui:repeat>         
+            <table id="goof"></table>    
         </div>
         <div id="mapcontainer">
             <div id="map"></div>

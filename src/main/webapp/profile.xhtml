@@ -29,6 +29,9 @@
                     <li>
                         <h:link value="File informatie" outcome="trafficjaminfo.xhtml"/>
                     </li>
+                    <li>
+                        <h:link value="Transfer" outcome="transfer.xhtml"/>
+                    </li>
                 </ul>
             </div>
             <div id="maincontent">
@@ -81,6 +84,8 @@
                         </td>
                     </tr>
                 </table>
+                <p> Wilt u een auto overnemen? klik dan hieronder op Transfer</p>
+                <input type="button" class="buttons" id="transferButton" value="Transfer" onclick="transferCar()"/>
             </div>
         </div>
     </h:body>
